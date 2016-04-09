@@ -1,0 +1,233 @@
+<html ng-app="companyApp">
+<head>
+	<title>Company App</title>
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<style>
+		.department-name.ng-valid {
+			background-color: #A3C644;
+		}
+		.department-name.ng-dirty.ng-invalid-required {
+			background-color: #B22746;
+		}
+		.department-name.ng-dirty.ng-invalid-minlength {
+			background-color: #8E244D;
+		}
+		body {
+			margin: 20px;
+		}
+	</style>
+</head>
+<body>
+<div class="container" ng-controller="CompanyController">
+	<div class="row">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+		        <h2 class="panel-title">Departments Panel</h3>
+		    </div>
+			<div class="panel-body">
+			 	<div class="row">
+					<div class="col-md-4">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+						        <h3 class="panel-title">Departments Tree</h3>
+							</div>
+							<div class="panel-body">
+								<ul class="nav nav-pills nav-stacked">
+									<li ng-repeat="departmentListItem in departments">
+										<a href="#" ng-click="selectDepartment(departmentListItem.departmentId)">{{departmentListItem.name}}</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+						        <h3 class="panel-title" ng-show="selectedDepartment == null">
+									Select Department
+								</h3>
+						        <h3 class="panel-title" ng-hide="selectedDepartment == null">
+									{{selectedDepartment.name}}
+								</h3>
+							</div>
+							<div class="panel-body">
+								<table class="table table-bordered" ng-hide="selectedDepartment == null">
+									<tr>
+										<td>Country Code:</td>
+										<td>{{selectedDepartment.countryCode}}</td>
+									</tr>
+									<tr>
+										<td>Address Line 1:</td>
+										<td>{{selectedDepartment.addressLine1}}</td>
+									</tr>
+									<tr>
+										<td>Address Line 2:</td>
+										<td>{{selectedDepartment.addressLine2}}</td>
+									</tr>
+									<tr>
+										<td>City Name:</td>
+										<td>{{selectedDepartment.cityName}}</td>
+									</tr>
+									<tr>
+										<td>State Code:</td>
+										<td>{{selectedDepartment.stateCode}}</td>
+									</tr>
+									<tr>
+										<td>Postal Code:</td>
+										<td>{{selectedDepartment.postalCode}}</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+						        <h3 class="panel-title">
+									Create Department
+								</h3>
+							</div>
+							<div class="panel-body">
+								<form ng-submit="createDepartment()" name="departmentForm">
+									<div class="form-group">
+										<label>Name:</label>
+										<input type="text" class="department-name form-control" name="dname" ng-model="departmentToCreate.name" required ng-minlength="4">
+										<span ng-show="departmentForm.dname.$error.required">This is a required field</span>
+										<span ng-show="departmentForm.dname.$error.minlength">Minimum length required is 4</span>
+									</div>
+									<div class="form-group">
+										<label>Country Code:</label>
+										<input type="text" class="form-control" ng-model="departmentToCreate.countryCode">
+									</div>
+									<div class="form-group">
+										<label>Address Line 1:</label>
+										<input type="text" class="form-control" ng-model="departmentToCreate.addressLine1">
+									</div>
+									<div class="form-group">
+										<label>Address Line 2:</label>
+										<input type="text" class="form-control" ng-model="departmentToCreate.addressLine2">
+									</div>
+									<div class="form-group">
+										<label>City Name:</label>
+										<input type="text" class="form-control" ng-model="departmentToCreate.cityName">
+									</div>
+									<div class="form-group">
+										<label>State Code:</label>
+										<input type="text" class="form-control" ng-model="departmentToCreate.stateCode">
+									</div>
+									<div class="form-group">
+										<label>Postal Code:</label>
+										<input type="text" class="form-control" ng-model="departmentToCreate.postalCode">
+									</div>
+									<div class="form-group">
+										<label>Parent Department:</label>
+										<div ng-init="departmentToCreate.parentDepartmentId = null">
+											<select class="form-control" ng-model="departmentToCreate.parentDepartmentId"
+												ng-options="dept.departmentId as dept.name for dept in departments">
+												<option value="">- Choose parent department -</option>
+											</select>
+										</div>
+									</div>
+									<input type="submit" value="Create">
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+		        <h2 class="panel-title">Employees Panel</h3>
+		    </div>
+			<div class="panel-body">
+			 	<div class="row">
+					<div class="col-md-4">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+						        <h3 class="panel-title">{{selectedDepartment.name}} Employees</h3>
+							</div>
+							<div class="panel-body">
+								<ul class="nav nav-pills nav-stacked">
+									<li ng-repeat="employee in selectedDepartmentEmployees">
+										<a href="#" ng-click="selectEmployee(employee.employeeId)">{{employee.firstName + ' ' + employee.lastName}}</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+						        <h3 class="panel-title" ng-show="selectedEmployee == null">
+									Select Employee
+								</h3>
+						        <h3 class="panel-title" ng-hide="selectedEmployee == null">
+									{{selectedEmployee.firstName + ' ' + selectedEmployee.lastName}}
+								</h3>
+							</div>
+							<div class="panel-body">
+								<table class="table table-bordered" ng-hide="selectedEmployee == null">
+									<tr>
+										<td>Primary Skill:</td>
+										<td>{{selectedEmployee.primarySkill}}</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+						        <h3 class="panel-title">
+									Create Employee
+								</h3>
+							</div>
+							<div class="panel-body">
+								<form ng-submit="createEmployee()" name="employeeForm">
+									<div class="form-group">
+										<label>First Name:</label>
+										<input type="text" class="employee-firstname form-control" name="efirstname" ng-model="employeeToCreate.firstName" required ng-minlength="1">
+										<span ng-show="employeeForm.efirstname.$error.required">This is a required field</span>
+										<span ng-show="employeeForm.efirstname.$error.minlength">Minimum length required is 1</span>
+									</div>
+									<div class="form-group">
+										<label>Last Name:</label>
+										<input type="text" class="employee-lastname form-control" name="elastname" ng-model="employeeToCreate.lastName" required ng-minlength="1">
+										<span ng-show="employeeForm.elastname.$error.required">This is a required field</span>
+										<span ng-show="employeeForm.elastname.$error.minlength">Minimum length required is 1</span>
+									</div>
+									<div class="form-group">
+										<label>Primary Skill:</label>
+										<input type="text" class="form-control" ng-model="employeeToCreate.primarySkill">
+									</div>
+									<div class="form-group">
+										<label>Department:</label>
+										<div ng-init="employeeToCreate.department = ''">
+											<select class="form-control" ng-model="employeeToCreate.department"
+												ng-options="dept.name for dept in departments" required>
+												<option value="">- Choose department -</option>
+											</select>
+										</div>
+									</div>
+									<input type="submit" value="Create">
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.js"></script>
+<script src="js/company-module.js" type="text/javascript"></script>
+<script src="js/controllers/company-controller.js" type="text/javascript"></script>
+<script src="js/services/departments-service.js" type="text/javascript"></script>
+<script src="js/services/employees-service.js" type="text/javascript"></script>
+
+</body>
+</html>
