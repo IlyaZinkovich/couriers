@@ -1,6 +1,5 @@
 package by.couriers.operator;
 
-
 import by.couriers.operator.dao.OrderDAO;
 import by.couriers.operator.model.LocalDateTimeConverter;
 import by.couriers.operator.model.Order;
@@ -11,18 +10,17 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
-@SpringBootApplication
+
+@Configuration
 @ComponentScan(basePackages = "by.couriers.operator")
-public class AppConfig {
+public class TestConfig {
 
     private static final String MONGO_URI = "mongodb://localhost";
-    private static final String DB_NAME = "couriers";
+    private static final String DB_NAME = "test";
     private static final String COLLECTION_NAME = "orders";
 
     @Bean
@@ -55,11 +53,9 @@ public class AppConfig {
 
     @Bean
     public Datastore datastore() {
-        return morphia().createDatastore(mongoClient(), DB_NAME);
-    }
-
-    public static void main(String[] args) {
-        ApplicationContext ctx = SpringApplication.run(AppConfig.class, args);
+        Datastore datastore = morphia().createDatastore(mongoClient(), DB_NAME);
+        datastore.delete(datastore.createQuery(Order.class));
+        return datastore;
     }
 
 }

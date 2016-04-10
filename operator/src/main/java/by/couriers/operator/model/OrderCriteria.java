@@ -72,7 +72,7 @@ public class OrderCriteria {
         return acceptanceDateTime;
     }
 
-    public class OrderCriteriaBuilder {
+    public static class OrderCriteriaBuilder {
 
         private String contactPhoneNumber;
         private String address;
