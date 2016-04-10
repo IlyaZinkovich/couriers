@@ -27,7 +27,8 @@ public class OrdersResource {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Order> getOrdersMatchingCriteria(@RequestParam OrderCriteria orderCriteria) {
+    public List<Order> getOrdersMatchingCriteria(@RequestParam(required = false) OrderCriteria orderCriteria) {
+        if (orderCriteria == null) orderCriteria = new OrderCriteria();
         return orderService.getOrdersMatchingCriteria(orderCriteria);
     }
 

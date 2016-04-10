@@ -1,6 +1,5 @@
 package by.couriers.operator;
 
-
 import by.couriers.operator.dao.OrderDAO;
 import by.couriers.operator.model.LocalDateTimeConverter;
 import by.couriers.operator.model.Order;
@@ -16,6 +15,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @SpringBootApplication
 @ComponentScan(basePackages = "by.couriers.operator")
@@ -56,6 +58,17 @@ public class AppConfig {
     @Bean
     public Datastore datastore() {
         return morphia().createDatastore(mongoClient(), DB_NAME);
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurerAdapter() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**").allowedOrigins("http://localhost:63342")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE");
+            }
+        };
     }
 
     public static void main(String[] args) {

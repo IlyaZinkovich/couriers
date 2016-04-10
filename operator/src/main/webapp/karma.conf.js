@@ -13,11 +13,9 @@ module.exports = function(config) {
     files: [
       'lib/angular.min.js',
       'lib/angular-mocks.js',
-      'js/controller.js',
-	  'js/company-module.js',
-	  'test/company-module-test.js',
-      'test/simpleSpec.js',
-      'test/controllerSpec.js'
+      'js/controllers/operator-controller.js',
+	  'js/operator-module.js',
+	  'test/operator-module-test.js',
     ],
 
     // list of files / patterns to exclude

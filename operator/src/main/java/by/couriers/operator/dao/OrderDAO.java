@@ -41,7 +41,6 @@ public class OrderDAO extends BasicDAO<Order, ObjectId> {
         updateOperations.set("address", order.getAddress());
         updateOperations.set("acceptanceDateTime", order.getAcceptanceDateTime());
         updateOperations.set("contactPhoneNumber", order.getContactPhoneNumber());
-        updateOperations.set("productList", order.getProductList());
         this.update(query, updateOperations);
     }
 }
