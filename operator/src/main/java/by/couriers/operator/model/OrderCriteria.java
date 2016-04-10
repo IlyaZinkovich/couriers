@@ -1,12 +1,13 @@
 package by.couriers.operator.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class OrderCriteria {
 
     private String contactPhoneNumber;
     private String address;
-    private LocalDateTime acceptanceDateTime;
+    private LocalDate acceptanceDateTime;
     private String sort;
     private Integer skip;
     private Integer limit;
@@ -15,7 +16,7 @@ public class OrderCriteria {
 
     }
 
-    private OrderCriteria(String contactPhoneNumber, String address, LocalDateTime acceptanceDateTime, String sort, Integer skip, Integer limit) {
+    private OrderCriteria(String contactPhoneNumber, String address, LocalDate acceptanceDateTime, String sort, Integer skip, Integer limit) {
         this.contactPhoneNumber = contactPhoneNumber;
         this.address = address;
         this.acceptanceDateTime = acceptanceDateTime;
@@ -32,7 +33,7 @@ public class OrderCriteria {
         this.address = address;
     }
 
-    public void setAcceptanceDateTime(LocalDateTime acceptanceDateTime) {
+    public void setAcceptanceDateTime(LocalDate acceptanceDateTime) {
         this.acceptanceDateTime = acceptanceDateTime;
     }
 
@@ -68,7 +69,7 @@ public class OrderCriteria {
         return address;
     }
 
-    public LocalDateTime getAcceptanceDateTime() {
+    public LocalDate getAcceptanceDate() {
         return acceptanceDateTime;
     }
 
@@ -76,7 +77,7 @@ public class OrderCriteria {
 
         private String contactPhoneNumber;
         private String address;
-        private LocalDateTime acceptanceDateTime;
+        private LocalDate acceptanceDateTime;
         private String sort;
         private Integer skip;
         private Integer limit;
@@ -94,7 +95,7 @@ public class OrderCriteria {
             return this;
         }
 
-        public OrderCriteriaBuilder acceptanceDateTime(LocalDateTime acceptanceDateTime) {
+        public OrderCriteriaBuilder acceptanceDateTime(LocalDate acceptanceDateTime) {
             this.acceptanceDateTime = acceptanceDateTime;
             return this;
         }

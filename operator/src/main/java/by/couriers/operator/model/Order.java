@@ -1,10 +1,12 @@
 package by.couriers.operator.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,8 @@ public class Order implements Serializable {
     private String orderId;
     private String contactPhoneNumber;
     private String address;
-    private LocalDateTime acceptanceDateTime;
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private LocalDate acceptanceDate;
     @Embedded
     private List<Product> productList;
 
@@ -50,12 +53,12 @@ public class Order implements Serializable {
         this.address = address;
     }
 
-    public LocalDateTime getAcceptanceDateTime() {
-        return acceptanceDateTime;
+    public LocalDate getAcceptanceDate() {
+        return acceptanceDate;
     }
 
-    public void setAcceptanceDateTime(LocalDateTime acceptanceDateTime) {
-        this.acceptanceDateTime = acceptanceDateTime;
+    public void setAcceptanceDate(LocalDate acceptanceDate) {
+        this.acceptanceDate = acceptanceDate;
     }
 
     public List<Product> getProductList() {
@@ -73,7 +76,7 @@ public class Order implements Serializable {
         if (getContactPhoneNumber() != null ? !getContactPhoneNumber().equals(order.getContactPhoneNumber()) : order.getContactPhoneNumber() != null)
             return false;
         if (getAddress() != null ? !getAddress().equals(order.getAddress()) : order.getAddress() != null) return false;
-        if (getAcceptanceDateTime() != null ? !getAcceptanceDateTime().equals(order.getAcceptanceDateTime()) : order.getAcceptanceDateTime() != null)
+        if (getAcceptanceDate() != null ? !getAcceptanceDate().equals(order.getAcceptanceDate()) : order.getAcceptanceDate() != null)
             return false;
         return !(getProductList() != null ? !getProductList().equals(order.getProductList()) : order.getProductList() != null);
 
@@ -84,7 +87,7 @@ public class Order implements Serializable {
         int result = getOrderId() != null ? getOrderId().hashCode() : 0;
         result = 31 * result + (getContactPhoneNumber() != null ? getContactPhoneNumber().hashCode() : 0);
         result = 31 * result + (getAddress() != null ? getAddress().hashCode() : 0);
-        result = 31 * result + (getAcceptanceDateTime() != null ? getAcceptanceDateTime().hashCode() : 0);
+        result = 31 * result + (getAcceptanceDate() != null ? getAcceptanceDate().hashCode() : 0);
         result = 31 * result + (getProductList() != null ? getProductList().hashCode() : 0);
         return result;
     }

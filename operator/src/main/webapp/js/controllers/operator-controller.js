@@ -1,5 +1,5 @@
 angular.module('operatorApp')
-    .controller('OperatorController', ['$scope', 'OrdersService', function($scope, ordersService) {
+    .controller('OperatorController', ['$scope', '$filter', 'OrdersService', function($scope, $filter, ordersService) {
         $scope.orders = [];
         $scope.selectedOrder = null;
 
@@ -10,14 +10,10 @@ angular.module('operatorApp')
         });
 
         $scope.createOrder = function(orderToCreate) {
-            ordersService.create($scope.orderToCreate).then(function(success) {
-                var orderId = success.data;
-                ordersService.getOrderById(orderId).then(function(success) {
-                    var order = success.data;
-                    $scope.orders.push(order);
-                }, function(error) {
-                    console.error(error);
-                })
+            var objectToCreate = angular.copy($scope.orderToCreate);
+            objectToCreate.acceptanceDate = $filter('date')($scope.orderToCreate.acceptanceDate, 'dd-MM-yyyy');
+            ordersService.create(objectToCreate).then(function(success) {
+                $scope.orders.push(success.data);
             }, function(error) {
                 console.error(error);
             });

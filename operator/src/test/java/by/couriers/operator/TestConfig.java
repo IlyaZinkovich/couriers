@@ -1,7 +1,7 @@
 package by.couriers.operator;
 
 import by.couriers.operator.dao.OrderDAO;
-import by.couriers.operator.model.LocalDateTimeConverter;
+import by.couriers.operator.model.LocalDateConverter;
 import by.couriers.operator.model.Order;
 import by.couriers.operator.model.Product;
 import com.mongodb.MongoClient;
@@ -46,7 +46,7 @@ public class TestConfig {
     @Bean
     public Morphia morphia() {
         Morphia morphia = new Morphia();
-        morphia.getMapper().getConverters().addConverter(new LocalDateTimeConverter());
+        morphia.getMapper().getConverters().addConverter(new LocalDateConverter());
         morphia.map(Order.class, Product.class);
         return morphia;
     }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class OrderServiceImplTest {
         Order order = new Order();
         order.setAddress("Boston");
         order.setContactPhoneNumber("+222");
-        order.setAcceptanceDateTime(LocalDateTime.now());
+        order.setAcceptanceDate(LocalDate.now());
         Product product = new Product();
         product.setName("t-shirt");
         product.setPrice(40);

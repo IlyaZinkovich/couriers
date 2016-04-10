@@ -4,15 +4,14 @@ import org.mongodb.morphia.converters.SimpleValueConverter;
 import org.mongodb.morphia.converters.TypeConverter;
 import org.mongodb.morphia.mapping.MappedField;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.Date;
 
-public class LocalDateTimeConverter extends TypeConverter implements SimpleValueConverter {
+public class LocalDateConverter extends TypeConverter implements SimpleValueConverter {
 
-    public LocalDateTimeConverter() {
-        super(LocalDateTime.class);
+    public LocalDateConverter() {
+        super(LocalDate.class);
     }
 
     @Override
@@ -22,10 +21,10 @@ public class LocalDateTimeConverter extends TypeConverter implements SimpleValue
         }
 
         if (fromDBObject instanceof Date) {
-            return ((Date) fromDBObject).toInstant().atZone(ZoneOffset.systemDefault()).toLocalDateTime();
+            return ((Date) fromDBObject).toInstant().atZone(ZoneOffset.systemDefault()).toLocalDate();
         }
 
-        if (fromDBObject instanceof LocalDateTime) {
+        if (fromDBObject instanceof LocalDate) {
             return fromDBObject;
         }
 
@@ -42,9 +41,8 @@ public class LocalDateTimeConverter extends TypeConverter implements SimpleValue
             return value;
         }
 
-        if (value instanceof LocalDateTime) {
-            ZonedDateTime zoned = ((LocalDateTime) value).atZone(ZoneOffset.systemDefault());
-            return Date.from(zoned.toInstant());
+        if (value instanceof LocalDate) {
+            return Date.from(((LocalDate)value).atStartOfDay().toInstant(ZoneOffset.UTC));
         }
 
         throw new IllegalArgumentException(String.format("Cannot encode object of class: %s", value.getClass().getName()));

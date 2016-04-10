@@ -16,8 +16,10 @@ public class OrdersResource {
     private OrderService orderService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public String createOrder(Order order) {
-        return orderService.createOrder(order);
+    public Order createOrder(@RequestBody Order order) {
+        String orderId = orderService.createOrder(order);
+        order.setOrderId(orderId);
+        return order;
     }
 
     @RequestMapping(path = "/{orderId}", method = RequestMethod.PUT)
